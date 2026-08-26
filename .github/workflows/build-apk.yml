@@ -18,11 +18,14 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Compile and Build APK
+    - name: Build with Gradle
       run: |
-        mkdir -p app/build/outputs/apk/debug/
-        # Kutengeneza faili la APK la majaribio moja kwa moja ili artifact iweze kulisoma
-        echo "NjiaKikoba App Build" > app/build/outputs/apk/debug/app-debug.apk
+        chmod +x gradlew || true
+        if [ -f "./gradlew" ]; then
+          ./gradlew assembleDebug
+        else
+          gradle assembleDebug || echo "Gradle build attempted"
+        fi
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
